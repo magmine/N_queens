@@ -15,7 +15,7 @@ template <std::size_t sz = 0>
 class chessboard {
 private:
 	std::array<std::bitset<sz>, sz> board;
-	std::size_t dim = sz;
+	static constexpr std::size_t dim = sz;
 
 public:
 	inline void set(uint32_t row, uint32_t col) {
@@ -26,7 +26,7 @@ public:
 		board[row].reset(col);
 	}
 
-	inline bool is_set(uint32_t row, uint32_t col) {
+	inline bool is_set(uint32_t row, uint32_t col) const {
 		return board[row].test(col);
 	}
 
@@ -34,7 +34,7 @@ public:
 		return dim;
 	}
 
-	inline bool is_valid(int32_t row, int32_t col) {
+	inline bool is_valid(int32_t row, int32_t col) const {
 		if (row < 0 || col < 0) {
 			return false;
 		}
@@ -44,21 +44,21 @@ public:
 		return false;
 	}
 
-	inline bool is_valid_col(uint32_t col) {
+	inline bool is_valid_col(uint32_t col) const {
 		if (col < 0 || col >= dim) {
 			return false;
 		}
 		return true;
 	}
 
-	inline bool is_valid_row(uint32_t row) {
+	inline bool is_valid_row(uint32_t row) const {
 		if (row < 0 || row >= dim) {
 			return false;
 		}
 		return true;
 	}
 
-	void print() {
+	void print() const {
 		for (std::size_t i = 0; i < dim + 4; i++) {
 			std::cout << "*";
 		}
@@ -79,14 +79,14 @@ template <std::size_t sz = 0>
 class n_queens {
 private:
 	chessboard<sz> board;
-	std::size_t dim = sz;
+	static constexpr std::size_t dim = sz;
 
 public:
 	bool solve(void) {
 		return solve(0);
 	}
 
-	bool is_valid_pos(uint32_t row, uint32_t col) {
+	bool is_valid_pos(uint32_t row, uint32_t col) const {
 		if (!is_empty_row(row)) {
 			return false;
 		}
@@ -119,7 +119,7 @@ private:
 		}
 		return false;
 	}
-	inline bool is_empty_row(uint32_t row) {
+	inline bool is_empty_row(uint32_t row) const {
 		for (std::size_t j = 0; j < dim; j++) {
 			if (board.is_set(row, j)) {
 				return false;
@@ -128,7 +128,7 @@ private:
 		return true;
 	}
 
-	inline bool is_empty_col(uint32_t col) {
+	inline bool is_empty_col(uint32_t col) const {
 		for (std::size_t i = 0; i < col; i++) {
 			if (board.is_set(i, col)) {
 				return false;
@@ -137,7 +137,7 @@ private:
 		return true;
 	}
 
-	bool is_empty_k_diag(uint32_t row, uint32_t col) {
+	bool is_empty_k_diag(uint32_t row, uint32_t col) const {
 		int32_t row_it = row;
 		int32_t col_it = col;
 		while (board.is_valid(row_it, col_it)) {
@@ -159,7 +159,7 @@ private:
 		return true;
 	}
 
-	bool is_empty_skew_diag(uint32_t row, uint32_t col) {
+	bool is_empty_skew_diag(uint32_t row, uint32_t col) const {
 		int32_t row_it = row;
 		int32_t col_it = col;
 		while (board.is_valid(row_it, col_it)) {
@@ -183,7 +183,7 @@ private:
 };
 
 int main() {
-	n_queens<20> queens;
+	n_queens<5> queens;
 	if (!queens.solve()) {
 		std::cout << "NOT possible\n";
 	}
